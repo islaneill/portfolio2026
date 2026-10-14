@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Isla Neil | Interaction Design Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#fffeec; --brown:#4a3429; --sky:#d2e3f1; --blue:#1546a0; --lime:#d8e860; --ivory:#fffde8; --muted:#d9cfc2;
+  --pad:clamp(18px,2.6vw,32px);
+  --sans:'DM Sans',system-ui,sans-serif; --serif:'Fraunces',Georgia,serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:var(--sans);background:linear-gradient(180deg,#fffbe3,#fffff2);color:var(--brown);line-height:1.5;
+  overflow-x:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+::selection{background:var(--blue);color:var(--ivory)}
+.label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+
+.glow{position:fixed;width:min(30vw,340px);aspect-ratio:1;border-radius:50%;left:30%;top:60%;transform:translate(-50%,-50%);
+  pointer-events:none;background:radial-gradient(circle at 42% 40%,rgba(120,170,235,.42) 0%,rgba(172,162,236,.2) 38%,rgba(255,196,218,.09) 58%,rgba(255,255,255,0) 72%);
+  filter:blur(26px);transition:left 1.2s cubic-bezier(.22,.61,.36,1),top 1.2s cubic-bezier(.22,.61,.36,1)}
+
+.page{position:relative;min-height:100svh;display:grid;grid-template-columns:1fr minmax(270px,31vw);
+  grid-template-rows:auto 1fr;column-gap:clamp(24px,6vw,100px);padding:var(--pad)}
+.meta{grid-column:1/-1;display:flex;justify-content:space-between}
+.meta span:last-child{color:#9a8574}
+
+.name{align-self:end;font-size:clamp(70px,min(19vw,33svh),300px);line-height:.8;padding-bottom:.04em}
+.isla{display:block;font-weight:700;letter-spacing:-.1em;text-transform:uppercase}
+.neil{display:block;font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:1.04em;text-transform:uppercase;
+  color:transparent;-webkit-text-stroke:2px var(--brown);paint-order:stroke fill;stroke-linejoin:round;margin-top:.04em}
+
+.index{align-self:end;display:flex;flex-direction:column;border-bottom:1px solid rgba(74,52,41,.3);margin-bottom:.4em}
+.index button{display:grid;grid-template-columns:34px 1fr auto;align-items:baseline;width:100%;padding:clamp(14px,2.4svh,22px) 0;
+  border-top:1px solid rgba(74,52,41,.3);transition:color .5s ease,padding-left .6s cubic-bezier(.22,.61,.36,1);
+  animation:rise .7s both}
+.index button:nth-child(2){animation-delay:.06s}.index button:nth-child(3){animation-delay:.12s}
+.index button:nth-child(4){animation-delay:.18s}.index button:nth-child(5){animation-delay:.24s}
+.index .n{font-size:12px;letter-spacing:.08em;color:#9a8574}
+.index .t{font-family:var(--sans);font-weight:500;font-size:clamp(20px,2.1vw,28px);letter-spacing:-.015em;line-height:1.15}
+.index .p{font-size:20px;font-weight:300;transition:transform .6s cubic-bezier(.22,.61,.36,1)}
+.index button:hover,.index button:focus-visible{color:var(--blue);padding-left:10px}
+.index button:hover .p{transform:rotate(90deg)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* popup */
+dialog{border:0;padding:0;margin:auto;width:min(900px,92vw);max-height:88svh;background:transparent;color:inherit;overflow:visible}
+dialog::backdrop{background:rgba(74,52,41,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+dialog[open]{animation:fade .6s ease both}
+dialog[open]::backdrop{animation:fade .6s ease both}
+dialog.out{animation:fadeout .35s ease both}
+dialog.out::backdrop{animation:fadeout .35s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeout{from{opacity:1}to{opacity:0}}
+.sheet{position:relative;max-height:88svh;overflow:auto;padding:clamp(28px,5vw,56px);border:1px solid rgba(74,52,41,.2)}
+.sheet[data-tone=about]{background:var(--cream)}
+.sheet[data-tone=work]{background:var(--sky)}
+.sheet[data-tone=edu]{background:var(--cream)}
+.sheet[data-tone=skills]{background:var(--brown);color:var(--ivory)}
+.sheet[data-tone=contact]{background:var(--lime)}
+#x{position:sticky;top:0;float:right;margin:-8px -8px 0 0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:8px;z-index:2}
+#x:hover{color:var(--blue)}
+.sheet[data-tone=skills] #x:hover{color:#a9c8ee}
+.sheet h2{font-family:var(--serif);font-weight:600;font-size:clamp(34px,5vw,60px);letter-spacing:-.04em;line-height:1;margin-bottom:clamp(22px,3.5vw,38px)}
+.sheet p{font-size:18px;max-width:46ch}
+.big{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5.4vw,66px);letter-spacing:-.04em;line-height:.98;max-width:15ch;margin-bottom:26px}
+
+.cards{display:grid;gap:12px}
+.wc{background:var(--brown);color:var(--ivory);padding:clamp(20px,3vw,30px)}
+.wc .k{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9bcae;margin-bottom:26px}
+.wc h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,42px);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
+.wc p{color:var(--muted);font-size:16px}
+.wc .soon{margin-top:16px;font-size:13px;color:#a99a8b}
+summary{list-style:none;cursor:pointer;position:relative}
+summary::-webkit-details-marker{display:none}
+summary b{position:absolute;right:0;top:0;font-size:26px;font-weight:400;transition:transform .3s}
+details[open] summary b{transform:rotate(45deg)}
+summary:hover h3{color:#a9c8ee}
+.wc ul{list-style:none;padding:0;margin-top:24px}
+.wc li a{display:flex;justify-content:space-between;gap:18px;padding:13px 0;border-top:1px solid rgba(255,253,232,.2);font-family:var(--serif);font-size:18px;line-height:1.3;transition:color .25s}
+.wc li a:hover,.all:hover{color:#a9c8ee}
+.wc time{font-size:13px;color:#c9bcae;white-space:nowrap;padding-top:4px;font-family:var(--sans)}
+.all{display:inline-block;margin-top:14px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;border-bottom:1px solid currentColor}
+
+.case-body{margin-top:26px;display:grid;gap:24px}
+.case-body h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9bcae;font-weight:500;margin-bottom:8px}
+.case-body p{color:var(--ivory);font-size:16px;max-width:62ch}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.step{background:rgba(255,253,232,.08);padding:16px}
+.step b{display:block;font-family:var(--serif);font-weight:400;font-size:20px;margin-bottom:6px}
+.case-body .step p{font-size:14px;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips i{display:block;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,253,232,.3)}
+@media(max-width:700px){.steps{grid-template-columns:1fr}}
+.shots{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.shots figure{flex:0 0 clamp(150px,22vw,190px);scroll-snap-align:start}
+.shots img{display:block;width:100%;aspect-ratio:1/2;object-fit:cover;object-position:top;border-radius:14px;background:#202020}
+.shots figcaption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.35}
+.pic{margin:0}
+.pic img{display:block;width:100%;height:auto;border-radius:12px}
+.pic figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags span{padding:7px 14px;border-radius:999px;background:#f5c542;color:var(--brown);font-size:14px;font-weight:500}
+.split{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:18px;align-items:start}
+@media(max-width:700px){.split{grid-template-columns:1fr}}
+.xp{margin-bottom:34px}
+.xp div{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 0;border-top:1px solid rgba(255,253,232,.3)}
+.xp div:last-child{border-bottom:1px solid rgba(255,253,232,.3)}
+.xp b{font-family:var(--serif);font-weight:400;font-size:22px;letter-spacing:-.02em;line-height:1.2}
+.xp span{color:var(--muted);font-size:16px}
+.xp a{display:inline-block;margin-top:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ivory);border-bottom:1px solid currentColor;transition:color .3s}
+.xp a:hover{color:#a9c8ee}
+.xp em{display:block;margin-top:6px;font-style:normal;font-size:15px;line-height:1.4;color:var(--ivory)}
+.sheet .lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9bcae;margin:0 0 14px}
+@media(max-width:700px){.xp div{grid-template-columns:1fr;gap:4px}}
+.ecards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ec{padding:clamp(20px,3vw,30px);min-height:260px;display:flex;flex-direction:column}
+.ec .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-bottom:auto;padding-bottom:34px}
+.ec h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,36px);letter-spacing:-.03em;line-height:1.1;margin-bottom:6px}
+.ec .where{font-size:16px;margin-bottom:18px}
+.ec .tags span{background:rgba(255,254,236,.75);font-size:13px;padding:6px 12px}
+@media(max-width:700px){.ecards{grid-template-columns:1fr}.ec{min-height:0}}
+.sheet .cols{border-top:0;gap:12px}
+.cols .col,.cols .col+.col{padding:24px 22px 20px;border:0;color:var(--brown)}
+.cols .col:nth-child(1){background:var(--sky)}
+.cols .col:nth-child(2){background:var(--lime)}
+.cols .col:nth-child(3){background:#f5d6d2}
+.cols .col h3{margin-bottom:14px}
+.cols .col li{color:var(--brown);padding:9px 0;border-top:1px solid rgba(74,52,41,.25);font-size:16px}
+.sheet{overflow-x:hidden}
+.cards,.case-body{grid-template-columns:minmax(0,1fr)}
+.wc,.case-body>*,.case-body figure{min-width:0}
+.steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+.split{grid-template-columns:minmax(180px,300px) minmax(0,1fr)}
+.shots{max-width:100%}
+.wc li a span{min-width:0;overflow-wrap:anywhere}
+@media(max-width:700px){.steps,.split{grid-template-columns:minmax(0,1fr)}}
+.edu{border-top:1px solid rgba(74,52,41,.3);padding:20px 0;display:grid;grid-template-columns:1fr 2fr;gap:12px}
+.edu h3{font-family:var(--serif);font-weight:400;font-size:26px;letter-spacing:-.02em;line-height:1.15}
+.edu p{font-size:16px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(255,253,232,.3)}
+.col{padding:22px 20px 10px 0}
+.col+.col{padding-left:20px;border-left:1px solid rgba(255,253,232,.3)}
+.col h3{font-family:var(--serif);font-weight:400;font-size:28px;letter-spacing:-.02em;line-height:1.15;margin-bottom:18px}
+.col li{list-style:none;color:var(--muted);font-size:16px;padding:6px 0}
+.mail{display:flex;justify-content:space-between;align-items:center;max-width:620px;margin-top:30px;padding-bottom:18px;border-bottom:1px solid var(--brown);font-family:var(--serif);font-size:clamp(22px,3vw,32px);transition:padding .3s,color .3s}
+.mail:hover{padding-left:12px;color:var(--blue)}
+.elsewhere{margin-top:22px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.elsewhere a{border-bottom:1px solid currentColor}.elsewhere a:hover{color:var(--blue)}
+
+@media(max-width:800px){
+  .page{grid-template-columns:1fr;grid-template-rows:auto auto auto;row-gap:34px}
+  .name{font-size:clamp(70px,26vw,200px);margin-top:6vh}
+  .index{margin-bottom:10px}
+  .cols{grid-template-columns:1fr}
+  .col+.col{padding-left:0;border-left:0;border-top:1px solid rgba(255,253,232,.3)}
+  .edu{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*,::backdrop{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow" id="glow" aria-hidden="true"></div>
+
+<main class="page">
+  <div class="meta label"><span>Interaction Design</span><span>Portfolio &mdash; 2026</span></div>
+  <h1 class="name" aria-label="Isla Neil"><span class="isla" aria-hidden="true">Isla</span><span class="neil" aria-hidden="true">Neil</span></h1>
+  <nav class="index" aria-label="Sections">
+    <button data-open="about"><span class="n">01</span><span class="t">About me</span><span class="p">+</span></button>
+    <button data-open="work"><span class="n">02</span><span class="t">Work</span><span class="p">+</span></button>
+    <button data-open="edu"><span class="n">03</span><span class="t">Education</span><span class="p">+</span></button>
+    <button data-open="skills"><span class="n">04</span><span class="t">Experience + skills</span><span class="p">+</span></button>
+    <button data-open="contact"><span class="n">05</span><span class="t">Contact</span><span class="p">+</span></button>
+  </nav>
+</main>
+
+<dialog id="dlg" aria-label="Section">
+  <div class="sheet" id="sheet"><button id="x" type="button">Close &times;</button><div id="body"></div></div>
+</dialog>
+
+<template id="t-about">
+  <h2>About me</h2>
+  <p class="big" style="font-size:clamp(28px,4vw,50px);max-width:20ch">Hi, I&rsquo;m Isla, an interaction design student based in Malm&ouml;.</p>
+  <p>I come from Scotland and Cyprus, and I love bringing those two different worlds into my designs.</p>
+  <p style="margin-top:14px">I&rsquo;m passionate about beautiful sites and creating whole experiences, both on and off the screen. Accessibility is a focus too: making beautiful work for everyone.</p>
+</template>
+
+<template id="t-work">
+  <h2>Work</h2>
+  <div class="cards">
+    <article class="wc"><details>
+      <summary><span class="k">Access / Group project, Dec 2025</span><h3>Doro</h3><p>Accessible guidance system</p><b>+</b></summary>
+      <div class="case-body">
+        <div><h4>Overview</h4><p>A group project of five for the Graphical User Interfaces course, designed for Doro phones and older users. We made an on-screen owl guide that talks people through everyday tasks such as making a video call, downloading an app or blocking a number, so they can use their phone independently.</p></div>
+        <div><h4>The idea</h4><p>The owl was chosen to suggest knowledge and guidance. One short instruction appears at a time in a speech bubble, while the relevant apps and buttons are highlighted and everything else is dimmed. The owl can be moved, and tapping it opens or closes the guide.</p></div>
+        <div><h4>My contribution</h4><p>My sketch proposed a &ldquo;guide me&rdquo; function available from the home page and throughout the phone. It opens with a polite, plain question and lists options by how often they are used. It also adds a confirmation step before a call starts, to avoid accidental taps.</p></div>
+        <div><h4>Process</h4>
+          <div class="steps">
+            <div class="step"><b>Sketching</b><p>Everyone sketched ideas, from app groups to side bars and search helpers. We combined them into one guided shortcut system.</p></div>
+            <div class="step"><b>Wireframes</b><p>Contrast and shadows made actions easy to spot and cut distractions. A limited round of user testing supported the owl idea.</p></div>
+            <div class="step"><b>Final style</b><p>We dropped outlines and the bubble arrow, raised contrast and shortened the text. Buttons light up when pressed to confirm each action.</p></div>
+          </div>
+        </div>
+        <div><h4>Final screens</h4><div class="shots"><figure><img src="images/01-doro-prototype-screen-start-the-guide-as.jpg" alt="Doro prototype screen: Start: the guide asks what you need help with" loading="lazy"><figcaption>Start: the guide asks what you need help with</figcaption></figure><figure><img src="images/02-doro-prototype-screen-one-clear-step-at-.jpg" alt="Doro prototype screen: One clear step at a time, with next and back" loading="lazy"><figcaption>One clear step at a time, with next and back</figcaption></figure><figure><img src="images/03-doro-prototype-screen-relevant-options-s.jpg" alt="Doro prototype screen: Relevant options stay bright while the rest fades" loading="lazy"><figcaption>Relevant options stay bright while the rest fades</figcaption></figure><figure><img src="images/04-doro-prototype-screen-guiding-through-th.jpg" alt="Doro prototype screen: Guiding through the phone settings" loading="lazy"><figcaption>Guiding through the phone settings</figcaption></figure><figure><img src="images/05-doro-prototype-screen-a-clear-confirmati.jpg" alt="Doro prototype screen: A clear confirmation to end the guide" loading="lazy"><figcaption>A clear confirmation to end the guide</figcaption></figure></div></div>
+        <div><h4>Palette</h4><div class="chips"><i style="background:#06651c" title="#06651C"></i><i style="background:#660c00" title="#660C00"></i><i style="background:#fce6c5" title="#FCE6C5"></i><i style="background:#202020" title="#202020"></i><i style="background:#647785" title="#647785"></i></div></div>
+      </div>
+    </details></article>
+    <article class="wc"><details>
+      <summary><span class="k">Inclusive play / Bachelor Year I</span><h3>Soundscape Builder</h3><p>Building imaginative worlds with sound</p><b>+</b></summary>
+      <div class="case-body">
+        <figure class="pic"><img src="images/06-wooden-grid-board-with-cylindrical-sound.jpg" alt="Wooden grid board with cylindrical sound blocks" loading="lazy"><figcaption>The physical prototype: a grid board with colour-coded blocks</figcaption></figure>
+        <div><h4>Overview</h4><p>A tangible audio kit that helps blind and visually impaired (BVI) children start and lead pretend play with sighted peers. A Studio I project with fieldwork, a physical prototype, a browser soundboard and an exhibition poster.</p></div>
+        <div><h4>What I learned</h4><p>Fieldwork with two special education professionals, one BVI and one sighted, showed that BVI children are usually not the ones who start the game. Play built around visual cues leaves them passive. Audio is a strength, not a workaround, and true inclusion means one shared entry point, not parallel versions.</p></div>
+        <div><h4>The concept</h4><p>Shake a block to hear a snippet of its sound, then slot it into the grid to add it to the shared world. When the soundscape is ready the volume swells, signalling every child to enter the pretend play together.</p></div>
+        <div><h4>Design qualities</h4><div class="tags"><span>Shareable</span><span>Child-led</span><span>Buildable</span><span>Exploratory</span><span>Tangible</span><span>Intuitive</span></div></div>
+        <figure class="pic"><img src="images/07-hand-drawn-storyboard-of-children-playin.jpg" alt="Hand-drawn storyboard of children playing with the sound blocks" loading="lazy"><figcaption>Storyboard: from choosing a sound to the whole group joining in</figcaption></figure>
+        <div><h4>Next step</h4><p>A finished version would have a built-in speaker for autonomy and portability, and different textures on the blocks for ambience, foreground and voice.</p></div>
+      </div>
+    </details></article>
+    <article class="wc"><details>
+      <summary><span class="k">Selected writing</span><h3>Writing projects</h3><p>Editorial selection</p><b>+</b></summary>
+      <ul>
+        <li><a href="https://islaontrack.medium.com/mick-schumacher-in-formula-one-the-legacy-of-a-name-c61c1f3dcc56" target="_blank" rel="noopener"><span>Mick Schumacher in Formula One: The Legacy of a Name</span><time>Nov 2022</time></a></li>
+        <li><a href="https://islaontrack.medium.com/formula-e-a-rookies-guide-3a72e10a1cfb" target="_blank" rel="noopener"><span>Formula E: A Rookie&rsquo;s Guide</span><time>Oct 2022</time></a></li>
+        <li><a href="https://islaontrack.medium.com/the-w-series-cancellation-how-did-we-get-here-c3e2be3b4b4a" target="_blank" rel="noopener"><span>The W-Series Cancellation: how did we get here?</span><time>Oct 2022</time></a></li>
+        <li><a href="https://islaontrack.medium.com/an-early-chequered-flag-for-w-series-2022-fab0a55f04c5" target="_blank" rel="noopener"><span>An early chequered flag for W-Series 2022</span><time>Oct 2022</time></a></li>
+        <li><a href="https://islaontrack.medium.com/vettel-is-willing-to-seriously-consider-a-one-off-return-to-the-track-a3a092eae2ce" target="_blank" rel="noopener"><span>Vettel is willing to &ldquo;seriously consider&rdquo; a one-off return to the track</span><time>Oct 2022</time></a></li>
+        <li><a href="https://islaontrack.medium.com/are-we-saying-goodbye-to-spa-and-what-does-it-mean-for-formula-1-ee560face6ca" target="_blank" rel="noopener"><span>Are we saying goodbye to Spa? And what does it mean for Formula 1?</span><time>Aug 2022</time></a></li>
+        <li><a href="https://islaontrack.medium.com/sebastian-vettel-5-of-his-best-races-d621a23b8984" target="_blank" rel="noopener"><span>Sebastian Vettel: 5 of His Best Races</span><time>Jul 2022</time></a></li>
+      </ul>
+      <a class="all" href="https://islaontrack.medium.com" target="_blank" rel="noopener">All writing on Medium</a>
+    </details></article>
+    <article class="wc"><details>
+      <summary><span class="k">Experiments in progress</span><h3>Playground</h3><p>UI + identity studies</p><b>+</b></summary>
+      <div class="case-body">
+        <div><h4>Heirlooms by Deldesigned</h4><p>A web concept for a family furniture and print business that hand paints floral designs onto chairs and tables. The aim was to let the painted pieces lead and keep the site warm, personal and simple to browse. This is an early idea for exploring layout and mood, not a finished design.</p></div>
+        <figure class="pic"><img src="images/08-heirlooms-by-deldesigned-header-with-box.jpg" alt="Heirlooms by Deldesigned header with boxed typewriter logo beside a floral print" loading="lazy"><figcaption>Rough identity idea: a boxed typewriter-style logo beside the floral print</figcaption></figure>
+        <div><h4>Rough wireframe, not a finished design</h4>
+          <div class="split">
+            <figure class="pic"><img src="images/09-designed-heirlooms-page-with-taupe-heade.jpg" alt="Designed Heirlooms page with taupe header, story text and two product sections with photo rows" loading="lazy"><figcaption>Early wireframe idea with placeholder text: header, story, then one piece per section</figcaption></figure>
+            <p>This wireframe is a first sketch of the mood and layout, so the details would change before launch. A simple stacked layout gives the story and each piece its own space, with a muted taupe band, typewriter-style text and big product names. All of the text is placeholder.</p>
+          </div>
+        </div>
+        <figure class="pic"><img src="images/10-three-photos-of-a-hand-painted-chair-wit.jpg" alt="Three photos of a hand-painted chair with floral designs" loading="lazy"><figcaption>The Sunny Chair: three views of the painted detail</figcaption></figure>
+        <figure class="pic"><img src="images/11-three-photos-of-a-hand-painted-table-wit.jpg" alt="Three photos of a hand-painted table with floral designs" loading="lazy"><figcaption>The Gustav Table: close-ups of the print</figcaption></figure>
+        <div><h4>Palette</h4><div class="chips"><i style="background:#b5a49d" title="#B5A49D"></i><i style="background:#466072" title="#466072"></i><i style="background:#ee6a5a" title="#EE6A5A"></i><i style="background:#556b2f" title="#556B2F"></i><i style="background:#ffaaa1" title="#FFAAA1"></i></div></div>
+        <div><h4>Focus</h4><div class="tags"><span>Web concept</span><span>Rough wireframe</span><span>Identity ideas</span><span>Layout</span><span>Typography</span></div></div>
+      </div>
+    </details></article>
+  </div>
+</template>
+
+<template id="t-edu">
+  <h2>Education</h2>
+  <div class="ecards">
+    <article class="ec" style="background:var(--sky)"><span class="k">Currently, second year</span><h3>Interaction Design</h3><p class="where">Malm&ouml; University</p><div class="tags"><span>UI</span><span>Identity</span><span>Accessibility</span><span>Studio projects</span><span>Academic writing</span></div></article>
+    <article class="ec" style="background:var(--lime)"><span class="k">Before</span><h3>Media and Communications HND</h3><p class="where">NESCol, Scotland</p><div class="tags"><span>Journalism</span><span>PR</span><span>Media</span><span>Communications</span></div></article>
+  </div>
+</template>
+
+<template id="t-skills">
+  <h2>Experience + skills</h2>
+  <div class="xp">
+    <div><b>Customer service and marketing</b><span>Angels Partners, Lisbon</span></div>
+    <div><b>Marketing intern</b><span>Synopsis Practice, Lisbon<br><em>Social media writing, blog posts and Instagram visuals</em><a href="https://www.synopsis.pt/blog-3-1" target="_blank" rel="noopener">Read the blog &nearr;</a></span></div>
+    <div><b>Interaction Design student</b><span>Malm&ouml; University</span></div>
+  </div>
+  <p class="lab">Skills</p>
+  <div class="cols">
+    <div class="col"><h3>Interaction</h3><ul><li>UI design</li><li>Wireframing + prototyping</li><li>User journeys</li><li>Interaction thinking</li></ul></div>
+    <div class="col"><h3>Identity</h3><ul><li>Visual direction</li><li>Brand systems</li><li>Typography + layout</li><li>Concept development</li></ul></div>
+    <div class="col"><h3>People + words</h3><ul><li>Accessibility</li><li>User research</li><li>Editorial writing</li><li>Clear communication</li></ul></div>
+  </div>
+  <p class="lab" style="margin-top:30px">Tools</p>
+  <div class="tags"><span>Figma</span><span>Affinity</span><span>JavaScript</span><span>HTML + CSS</span><span>3D printing</span><span>Laser cutting</span></div>
+</template>
+
+<template id="t-contact">
+  <h2>Let's make something useful.</h2>
+  <a class="mail" href="mailto:isla.neil11@gmail.com"><span>Email Isla</span><span aria-hidden="true">&rarr;</span></a>
+  <p class="elsewhere">Also on <a href="https://www.linkedin.com/in/islaneil/" target="_blank" rel="noopener">LinkedIn</a> and <a href="https://islaontrack.medium.com" target="_blank" rel="noopener">Medium</a></p>
+</template>
+
+<script>
+(function(){
+  var dlg=document.getElementById('dlg'),body=document.getElementById('body'),sheet=document.getElementById('sheet'),
+      g=document.getElementById('glow'),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  document.querySelectorAll('[data-open]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var k=b.getAttribute('data-open');
+      body.innerHTML=document.getElementById('t-'+k).innerHTML;
+      sheet.setAttribute('data-tone',k);sheet.scrollTop=0;dlg.showModal();
+    });
+  });
+  function shut(){
+    if(reduce){dlg.close();return}
+    dlg.classList.add('out');
+    setTimeout(function(){dlg.classList.remove('out');dlg.close()},350);
+  }
+  document.getElementById('x').addEventListener('click',shut);
+  dlg.addEventListener('click',function(e){if(e.target===dlg)shut()});
+  dlg.addEventListener('cancel',function(e){e.preventDefault();shut()});
+  if(!reduce)document.addEventListener('pointermove',function(e){g.style.left=e.clientX+'px';g.style.top=e.clientY+'px'});
+})();
+</script>
+</body>
+</html>
